@@ -1,0 +1,15 @@
+{
+  "name": "flipflop2026",
+  "version": "1.0.0",
+  "description": "flipflop.slome.org challenges for 2026",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "advent-of-code": "^5.0.0",
+    "z3-solver": "^4.12.4"
+  }
+}

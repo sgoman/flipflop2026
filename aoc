@@ -1,0 +1,43 @@
+#!/bin/bash
+#$ node node_modules/advent-of-code/bin/advent.js 
+#Usage: advent [options] [command]
+#
+#Options:
+#  -V, --version                       output the version number
+#  -h, --help                          display help for command
+#
+#Commands:
+#  run [options] <day> <part> <input>  Runs a given day with the given input
+#  init [options] <day>                Initializes the file for a given day
+#  help [command]                      display help for command
+#
+#  Examples:
+#
+#    advent run --day 1 --part 1 'this is my input'
+#    cat input.txt | advent run -d 1 -p 1 -
+#    advent run -d 1 -p 1 - < input.txt
+#    advent run -d 1 -p 1 + --session 'session=asefsafes...'
+#
+#  Notes:
+#
+#    For anything that reaches out to advent-of-code.com, you need to
+#    provide your session token. You can get this by opening up the
+#    network tab in the devtools, logging into to adventofcode.com, then
+#    viewing what gets sent as the `Cookie:` request header on
+#    subsequent requests. You may pass in the required value using
+#    `--session [value]` or using the `ADVENT_SESSION` environment
+#    variable. Note that it likely starts with `session=`
+#    That is: your environment variable should contain "session=" as well!
+#
+#    This node module will cache puzzle inputs in this file:
+#      ~/.config/configstore/advent-of-code.json
+
+aocyear=2025
+
+if [ "$1" == "help" ] || [ "$1" == "init" ]
+then
+  node node_modules/advent-of-code/bin/advent.js $1 --template-file './dayTemplate.js' $2
+else
+  node node_modules/advent-of-code/bin/advent.js run --year $aocyear $1 $2 $3
+fi
+
