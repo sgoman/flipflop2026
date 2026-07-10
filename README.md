@@ -39,5 +39,6 @@ The challenges
 
 1. **[Day 1: Coffee Brewing](day01.js)** heating or cooling cups of coffee to a certain target temperature
 2. **[Day 2: Lasering Walls](day02.js)** shooting lasers left and right at wall panels in a circle. Sometimes the walls move as well!
-3. **[Day 3: Password Competition(day03.js)** calculating password strength
-4. **[Day 4: Magic Flowerstalk(day04.js)** fear my botany powers cutting flowers higher than towers!
+3. **[Day 3: Password Competition](day03.js)** calculating password strength
+4. **[Day 4: Magic Flowerstalk](day04.js)** fear my botany powers cutting flowers higher than towers!
+5. **[Day 5: One Way City](day05.js)** navigating a maze of conveyor belts. That you are allowed to change and even cheat on!
