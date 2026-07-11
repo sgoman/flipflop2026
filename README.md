@@ -42,3 +42,4 @@ The challenges
 3. **[Day 3: Password Competition](day03.js)** calculating password strength
 4. **[Day 4: Magic Flowerstalk](day04.js)** fear my botany powers cutting flowers higher than towers!
 5. **[Day 5: One Way City](day05.js)** navigating a maze of conveyor belts. That you are allowed to change and even cheat on!
+6. **[Day 6: Gears and Lights](day06.js)** gears turning each other having an effect on adjacent lights
