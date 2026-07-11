@@ -1,6 +1,6 @@
 'use strict'
 
-const { fourWayDeltas, getSurrounding, gridCells, gridToString } = require('./utils.js')
+const { fourWayDeltas, getSurrounding, gridCells } = require('./utils.js')
 
 const parseInput = input => input.split('\n').map(l => l.split(''))
 const posHash = (row, col) => `${row}:${col}`
