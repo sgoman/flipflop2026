@@ -192,6 +192,16 @@ const range = function* () {
     }
 }
 
+const isPrime = n => {
+    if (n < 1) return false
+    if (n <= 3) return true
+    if (n % 2 == 0 || n % 3 == 0) return false
+    for (let i = 5; i * i <= n; i += 6) {
+        if (n % i == 0 || n % (i + 2) == 0) return false
+    }
+    return true
+}
+
 // taken from https://www.sahinarslan.tech/posts/deep-dive-into-data-structures-using-javascript-heap-binary-heap
 // methods and attributes starting with an underscore are considered private and should not be called from the outside
 // Min-Heap example: new Heap((a, b) => a[0] - b[0])
@@ -275,5 +285,5 @@ const gridToString = grid => grid.map(l => l.join('')).join('\n')
 
 module.exports = { fourWayDeltas, eightWayDeltas, gridInit, gridClone, validCoordForGrid, getSurroundingGridCoords, getSurroundingGridTiles, getSurrounding, gridCells,
     transpose, manhattan, combineConditionally, permutator, arraySum, arrayProduct, arrayHasIndex, shuffledArray,
-    arrayFrequency, gcd, lcm, cramer2, pairs, range, Heap, levenstein, gridToString, steps
+    arrayFrequency, gcd, lcm, cramer2, pairs, range, Heap, levenstein, gridToString, steps, isPrime
 }

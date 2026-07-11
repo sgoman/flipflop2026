@@ -1,20 +1,10 @@
 'use strict'
 
-const { fourWayDeltas, getSurrounding, gridCells } = require('./utils.js')
+const { fourWayDeltas, getSurrounding, gridCells, isPrime } = require('./utils.js')
 
 const parseInput = input => input.split('\n').map(l => l.split(''))
 const posHash = (row, col) => `${row}:${col}`
 const dirs = '()'
-
-const isPrime = n => {
-    if (n < 1) return false
-    if (n <= 3) return true
-    if (n % 2 == 0 || n % 3 == 0) return false
-    for (let i = 5; i * i <= n; i += 6) {
-        if (n % i == 0 || n % (i + 2) == 0) return false
-    }
-    return true
-}
 
 const getGroup = (grid, q) => {
     const s = new Set()
