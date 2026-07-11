@@ -67,17 +67,12 @@ const work = (grid, gears, hasBluetooth, checkPrimes) => {
 
 const solve = (input, gears, hasBluetooth, checkPrimes) => {
     let grid = work(parseInput(input), gears, hasBluetooth, checkPrimes)
-    if (gears.length > 1) {
-        console.log('###')
-        console.log(gridToString(grid))
-    }
     let lights = gridCells(grid).filter(c => c.value == '*')
     let bin = lights.reduce((b, l) => {
         const n = getSurrounding(grid, l.row, l.col, fourWayDeltas).filter(c => dirs.indexOf(c.tile) != -1)
         if (n.length) b += dirs.indexOf(n[0].tile)
         return b
     }, '')
-    console.log(bin)
     return BigInt('0b'+bin)
 }
 
