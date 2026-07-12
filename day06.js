@@ -9,8 +9,7 @@ const dirs = '()'
 const getGroup = (grid, q) => {
     const s = new Set()
     while (q.length) {
-        const [row, col] = q.pop()
-        const h = posHash(row, col)
+        const [row, col] = q.pop(), h = posHash(row, col)
         if (!s.has(h)) {
             if (grid[row][col] == '3') s.add(h)
             for (const n of getSurrounding(grid, row, col, fourWayDeltas).filter(f => f.tile == '3')) {
@@ -24,14 +23,11 @@ const getGroup = (grid, q) => {
 const skipGroup = (grid, row, col) => isPrime(getGroup(grid, [[row, col]]).size)
 
 const work = (grid, gears, hasBluetooth, checkPrimes) => {
-    let q = []
-    let v = new Set()
-    let {row, col} = gridCells(grid).filter(t => t.value == 'S')[0]
+    const q = [], v = new Set(), {row, col} = gridCells(grid).filter(t => t.value == 'S')[0]
     q.push([row, col, dirs[0]])
 
     while(q.length) {
-        let [r, c, d] = q.pop()
-        let h = posHash(r, c)
+        const [r, c, d] = q.pop(), h = posHash(r, c)
         if (!v.has(h)) {
             v.add(h)
             grid[r][c] = d
@@ -56,9 +52,9 @@ const work = (grid, gears, hasBluetooth, checkPrimes) => {
 }
 
 const solve = (input, gears, hasBluetooth, checkPrimes) => {
-    let grid = work(parseInput(input), gears, hasBluetooth, checkPrimes)
-    let lights = gridCells(grid).filter(c => c.value == '*')
-    let bin = lights.reduce((b, l) => {
+    const grid = work(parseInput(input), gears, hasBluetooth, checkPrimes)
+    const lights = gridCells(grid).filter(c => c.value == '*')
+    const bin = lights.reduce((b, l) => {
         const n = getSurrounding(grid, l.row, l.col, fourWayDeltas).filter(c => dirs.indexOf(c.tile) != -1)
         if (n.length) b += dirs.indexOf(n[0].tile)
         return b
