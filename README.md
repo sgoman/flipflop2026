@@ -44,3 +44,4 @@ The challenges
 5. **[Day 5: One Way City](day05.js)** navigating a maze of conveyor belts. That you are allowed to change and even cheat on!
 6. **[Day 6: Gears and Lights](day06.js)** gears turning each other having an effect on adjacent lights
 7. **[Day 7: Ross's Pet Snake](day07.js)** A game variant of snakes, not ladders
+8. **[Day 8: The Amazing Digital Stoats](day08.js)** Evolving pets following rules
