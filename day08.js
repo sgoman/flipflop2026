@@ -1,56 +1,64 @@
 'use strict'
 
-// const { fourWayDeltas } = require('./utils.js')
+const parseInput = input => input.trim().split('\n').map(l => l.split(' '))
 
-const parseInput = input => input.split('\n').map(l => l.split(' '))
+const keyForPair = (a, b) => [a, b].sort().join(':')
+const keyForOrientedPair = (a, b) => `${a}:${b}`
+
+const buildRuleMaps = rules => {
+    const unary = new Map()
+    const pair = new Map()
+
+    for (const rule of rules) {
+        const [a, b, ...rest] = rule
+        if (!unary.has(a)) unary.set(a, [b, ...rest])
+
+        const key = keyForPair(a, b)
+        if (!pair.has(key)) pair.set(key, rest)
+    }
+
+    return { unary, pair }
+}
+
+const evolvePairsLengthOnly = (pairRules, steps) => {
+    let pairCounts = new Map([[keyForOrientedPair('A', 'B'), 1n]])
+
+    for (let i = 0; i < steps; i++) {
+        const nextCounts = new Map()
+
+        for (const [key, count] of pairCounts.entries()) {
+            const [a, b] = key.split(':')
+            const middle = pairRules.get(keyForPair(a, b))
+            const sequence = [a, ...middle, b]
+
+            for (let j = 0; j < sequence.length - 1; j++) {
+                const nextKey = keyForOrientedPair(sequence[j], sequence[j + 1])
+                nextCounts.set(nextKey, (nextCounts.get(nextKey) || 0n) + count)
+            }
+        }
+
+        pairCounts = nextCounts
+    }
+
+    return Array.from(pairCounts.values()).reduce((acc, count) => acc + count, 0n) + 1n
+}
 
 const part1 = input => {
     const solutions = { "part 1": null, "part 2": null, "part 3": null}
-    const rules = parseInput(input)
+    const { unary, pair } = buildRuleMaps(parseInput(input))
 
     let pop = ['A', 'B']
     for (let i = 0; i < 7; i++) {
         const desc = []
         for (const s of pop.slice(0)) {
-            const r = rules.filter(f => f[0] == s)[0]
-            desc.push(...r.slice(1))
+            const r = unary.get(s)
+            desc.push(...r)
         }
         pop = desc.slice(0)
     }
     solutions["part 1"] = pop.length
-
-    pop = ['A', 'B']
-    for (let i = 0; i < 7; i++) {
-        const desc = []
-        for (let s = 0, l = pop.length - 2; s <= l; s++) {
-            const [a, b] = [pop[s], pop[s + 1]]
-            const r = rules.filter(f => (f[0] == a && f[1] == b) || (f[0] == b && f[1] == a))[0]
-            if (s == 0) {
-                desc.push(a, ...r.slice(2), b)
-            } else {
-                desc.push(...r.slice(2), b)
-            }
-        }
-        pop = desc.slice(0)
-    }
-    solutions["part 2"] = pop.length
-
-    pop = ['A', 'B']
-    for (let i = 0; i < 21; i++) {
-        const desc = []
-        for (let s = 0, l = pop.length - 2; s <= l; s++) {
-            const [a, b] = [pop[s], pop[s + 1]]
-            const r = rules.filter(f => (f[0] == a && f[1] == b) || (f[0] == b && f[1] == a))[0]
-            if (s == 0) {
-                desc.push(a, ...r.slice(2), b)
-            } else {
-                desc.push(...r.slice(2), b)
-            }
-        }
-        pop = desc.slice(0)
-    }
-    solutions["part 3"] = pop.length
-
+    solutions["part 2"] = evolvePairsLengthOnly(pair, 7).toString()
+    solutions["part 3"] = evolvePairsLengthOnly(pair, 21).toString()
 
     return solutions
 }
