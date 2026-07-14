@@ -103,6 +103,8 @@ const arrayProduct = arr => arr.reduce((acc, cur) => acc * cur, 1)
 
 const arrayHasIndex = (array, index) => Array.isArray(array) && array.hasOwnProperty(index)
 
+const arrayJoin = (delimiter, ...args) => args.join(delimiter)
+
 /**
  * returns a copy of an array with elements in a radomized order
  *
@@ -285,5 +287,5 @@ const gridToString = grid => grid.map(l => l.join('')).join('\n')
 
 module.exports = { fourWayDeltas, eightWayDeltas, gridInit, gridClone, validCoordForGrid, getSurroundingGridCoords, getSurroundingGridTiles, getSurrounding, gridCells,
     transpose, manhattan, combineConditionally, permutator, arraySum, arrayProduct, arrayHasIndex, shuffledArray,
-    arrayFrequency, gcd, lcm, cramer2, pairs, range, Heap, levenstein, gridToString, steps, isPrime
+    arrayFrequency, arrayJoin, gcd, lcm, cramer2, pairs, range, Heap, levenstein, gridToString, steps, isPrime
 }

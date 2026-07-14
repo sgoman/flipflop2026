@@ -1,14 +1,14 @@
 'use strict'
 
-const { fourWayDeltas, getSurrounding, gridCells, gridToString } = require('./utils.js')
+const { fourWayDeltas, getSurrounding, gridCells, gridToString, arrayJoin } = require('./utils.js')
 
 const parseInput = input => input.split('\n').map(l => l.split(''))
 
-const posHash = (row, col) => `${row}:${col}`
+const hash = (...args) => arrayJoin(':', ...args)
 
 const teleport = (grid, row, col) => {
 	const t = []
-	const h = posHash(row, col)
+	const h = hash(row, col)
 	for (const [dr, dc] of fourWayDeltas) {
 		let tr = row + dr, tc = col + dc
 		if (grid[tr][tc] == '#') continue
@@ -18,7 +18,7 @@ const teleport = (grid, row, col) => {
 		}
 		tr -= dr
 		tc -= dc
-		if (posHash(tr, tc) != h) t.push({row: tr, col: tc})
+		if (hash(tr, tc) != h) t.push({row: tr, col: tc})
 	}
 	return t
 }
@@ -29,7 +29,7 @@ const floodFill = (grid, row, col, part) => {
 	let best = [1e6, []]
 	while (q.length) {
 		const [r, c, v, d, m] = q.shift() // current row, column, step count value, distance from portal, list of actions performed on this route
-		const h = posHash(r, c)
+		const h = hash(r, c)
 		if (grid[r][c] == 'E' && v < best[0]) best =[v, m]
 		if (!s.has(h) || v < s.get(h)) {
 			s.set(h, v)
