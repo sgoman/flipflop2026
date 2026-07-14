@@ -28,26 +28,26 @@ const floodFill = (grid, row, col, part) => {
 	const s = new Map()
 	let best = [1e6, []]
 	while (q.length) {
-		const [r, c, v, d, m, a] = q.shift() // current row, column, step count value, distance from portal, list of actions performed on this route, action that got us here
+		const [r, c, v, d, m] = q.shift() // current row, column, step count value, distance from portal, list of actions performed on this route
 		const h = posHash(r, c)
 		if (grid[r][c] == 'E' && v < best[0]) best =[v, m]
 		if (!s.has(h) || v < s.get(h)) {
 			s.set(h, v)
 			if (part == 2) {
 				for (const t of teleport(grid, r, c)) {
-					q.push([t.row, t.col, v + 1, d, [...m, {action: "teleport", or: r, oc: c, tr: t.row, tc: t.col, cost: 1, total: v + 1}], "teleport"])
+					q.push([t.row, t.col, v + 1, d, [...m, {action: "teleport", or: r, oc: c, tr: t.row, tc: t.col, cost: 1, total: v + 1}]])
 				}
 			}
 			if (part ==3) {
 				for (const t of teleport(grid, r, c)) {
 					const w = getSurrounding(grid, r, c, fourWayDeltas).filter(c => c.tile == '#')
 					const walkOrPortal = Math.min(d, w.length == 0 ? 3 : 2) + 1 // means "backtrack to last portal or shoot a new one" really...
-                    q.push([t.row, t.col, v + walkOrPortal, 1, [...m, {action: "portal", or: r, oc: c, tr: t.row, tc: t.col, cost: walkOrPortal, total: v + walkOrPortal}], "portal"])
+                    q.push([t.row, t.col, v + walkOrPortal, 1, [...m, {action: "portal", or: r, oc: c, tr: t.row, tc: t.col, cost: walkOrPortal, total: v + walkOrPortal}]])
 				}
 			}
 			const neighbours = getSurrounding(grid, r, c, fourWayDeltas).filter(c => c.tile == '.' || c.tile == 'E')
 			for (const n of neighbours) {
-				q.push([n.row, n.col, v + 1, d + 1, [...m, {action: "walk", or: r, oc: c, tr: n.row, tc: n.col, cost: 1, total: v + 1}], "walk"])
+				q.push([n.row, n.col, v + 1, d + 1, [...m, {action: "walk", or: r, oc: c, tr: n.row, tc: n.col, cost: 1, total: v + 1}]])
 			}
 		}
 	}
