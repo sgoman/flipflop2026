@@ -26,14 +26,14 @@ const teleport = (grid, row, col) => {
 
 const floodFill = (grid, row, col, part) => {
 	const q = [[row, col, 0, 2, [{action: "move to start", or: 0, oc: 0, tr: row, tc: col, cost: 0, total: 0}], "init"]]
-	const s = new Set()
+	const s = new Map()
 	let best = [1e6, []]
 	while (q.length) {
 		const [r, c, v, d, m, a] = q.shift()
-		const h = actionHash(r, c, a)
+		const h = posHash(r, c)
 		if (grid[r][c] == 'E' && v < best[0]) best =[v, m]
-		if (!s.has(h)) {
-			s.add(h)
+		if (!s.has(h) || v < s.get(h)) {
+			s.set(h, v)
 			if (part == 2) {
 				for (const t of teleport(grid, r, c)) {
 					q.push([t.row, t.col, v + 1, d, [...m, {action: "teleport", or: r, oc: c, tr: t.row, tc: t.col, cost: 1, total: v + 1}], "teleport"])
