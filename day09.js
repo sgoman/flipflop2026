@@ -1,11 +1,10 @@
 'use strict'
 
-const { fourWayDeltas, getSurrounding, gridCells, gridToString, manhattan } = require('./utils.js')
+const { fourWayDeltas, getSurrounding, gridCells, gridToString } = require('./utils.js')
 
 const parseInput = input => input.split('\n').map(l => l.split(''))
 
 const posHash = (row, col) => `${row}:${col}`
-const actionHash = (row, col, action) => `${row}:${col}:${action}`
 
 const teleport = (grid, row, col) => {
 	const t = []
@@ -29,7 +28,7 @@ const floodFill = (grid, row, col, part) => {
 	const s = new Map()
 	let best = [1e6, []]
 	while (q.length) {
-		const [r, c, v, d, m, a] = q.shift()
+		const [r, c, v, d, m, a] = q.shift() // current row, column, step count value, distance from portal, list of actions performed on this route, action that got us here
 		const h = posHash(r, c)
 		if (grid[r][c] == 'E' && v < best[0]) best =[v, m]
 		if (!s.has(h) || v < s.get(h)) {
@@ -42,9 +41,8 @@ const floodFill = (grid, row, col, part) => {
 			if (part ==3) {
 				for (const t of teleport(grid, r, c)) {
 					const w = getSurrounding(grid, r, c, fourWayDeltas).filter(c => c.tile == '#')
-					const walkOrPortal = Math.min(d, w.length == 0 ? 3 : 2) + 1
-					//if (manhattan([r, c], [t.row, t.col]) > walkOrPortal)
-						q.push([t.row, t.col, v + walkOrPortal, 1, [...m, {action: "portal", or: r, oc: c, tr: t.row, tc: t.col, cost: walkOrPortal, total: v + walkOrPortal}], "portal"])
+					const walkOrPortal = Math.min(d, w.length == 0 ? 3 : 2) + 1 // means "backtrack to last portal or shoot a new one" really...
+                    q.push([t.row, t.col, v + walkOrPortal, 1, [...m, {action: "portal", or: r, oc: c, tr: t.row, tc: t.col, cost: walkOrPortal, total: v + walkOrPortal}], "portal"])
 				}
 			}
 			const neighbours = getSurrounding(grid, r, c, fourWayDeltas).filter(c => c.tile == '.' || c.tile == 'E')
@@ -69,8 +67,10 @@ const part1 = input => {
 	const start = gridCells(grid).filter(c => c.value == 'S')[0]
 	for (const i of [1, 2, 3])
 		solutions["part " + i] = floodFill(grid, start.row, start.col, i)[0]
-	for (const m of floodFill(grid, start.row, start.col, 3)[1])
-		printMoves(parseInput(input), m)
+
+    // uncomment next line for debug output on step by step visualizations, jump to next "action" quickly
+	//for (const m of floodFill(grid, start.row, start.col, 3)[1]) printMoves(parseInput(input), m)
+
 	return solutions
 }
 
