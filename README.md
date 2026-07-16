@@ -46,3 +46,5 @@ The challenges
 7. **[Day 7: Ross's Pet Snake](day07.js)** A game variant of snakes, not ladders
 8. **[Day 8: The Amazing Digital Stoats](day08.js)** Evolving pets following rules
 9. **[Day 9: Thinking With Mazes](day09.js)** Maze runners, Portal style
+10. **[Day 10: The Banena(tm) Programming Language](day10.js)** Implementing a fantasy console interpreter
+11. **[Day 11: Humongous Trees](day11.js)** Growing recursive Trees
