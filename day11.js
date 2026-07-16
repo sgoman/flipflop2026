@@ -25,46 +25,50 @@ const harnessedEnergy = stems => stems.reduce((energy, stem) => {
 const hash = (row, col) => [row, col].join(':')
 
 const grow = (tree, num) => {
-	console.log({num, tree})
+	//console.log({num, tree})
 	const delta = {left: [0, -1], up: [-1, 0], right: [0, 1]}
 	const world = gridInit(100, 201, '.')
 	const stems = []
+    let lastRequired, lastHarnessed
 	world[99][100] = '@'
 	let q = new Map()
 	q.set(hash(99, 100), [99, 100, '00'])
 	for (let y = 0; y < 100; y++) {
 		const t = new Map() 
 		for (const [row, col, id] of q.values()) {
-			world[row][col] = '#'
-			stems.push({row, col, value: '#'})
 			const sprout = tree[id]
 			for (const s of ["left", "right", "up"]) {
 				if (sprout[s] == 'XX') continue
 				const [dr, dc] = delta[s]
 				const [nr, nc] = [row + dr, col + dc]
 				const h = hash(nr, nc)
+                if (stems.filter(f => f.row == nr && f.col == nc).length) continue
 				if (world[nr][nc] == '#') continue
 				world[nr][nc] = '@'
 				if (t.has(h)) {
-					if (Number(s) > Number(t.get(h)))
-						t.set(h, [nr, nc, sprout[s]])
+                    const [tr, tc, ts] = t.get(h)
+                    if (Number(ts) < Number(sprout[s]))
+                        t.set(h, [nr, nc, sprout[s]])
 				} else {
-					t.set(h, [nr, nc, sprout[s]])
-				}
-			}
+                    t.set(h, [nr, nc, sprout[s]])
+                }
+            }
+			world[row][col] = '#'
+			stems.push({row, col, value: '#'})
 		}
 		q = t
-		const required = (stems.length + q.size) * 3
+        const mass = stems.length + q.size
+		const required = mass * 3
 		const harnessed = harnessedEnergy(stems)
 		// console.log({y, q, required, harnessed})
 		// console.log(gridToString(world))
-		if (y >= 4 && required > harnessed) {
-			console.log({y, q, required, harnessed})
-			console.log(gridToString(world))
-			return required / 3
+		if (y == 99 || (y >= 4 && required > harnessed)) {
+			//console.log(gridToString(world))
+            console.log("Tree died at year " + (y + 1) + ". Requires " + required + " energy and produces " + harnessed + ". Biological " + mass)
+			return mass
 		}
-	}
-	console.log("fully grown!", stems.length + q.size)
+    }
+    console.log("Erm???")
 	return stems.length + q.size
 }
 
