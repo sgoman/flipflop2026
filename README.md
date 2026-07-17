@@ -48,3 +48,4 @@ The challenges
 9. **[Day 9: Thinking With Mazes](day09.js)** Maze runners, Portal style
 10. **[Day 10: The Banena(tm) Programming Language](day10.js)** Implementing a fantasy console interpreter
 11. **[Day 11: Humongous Trees](day11.js)** Growing recursive Trees
+12. **[Day 12: Bingo Bango Bongo](day12.js)** internships won by lottery
